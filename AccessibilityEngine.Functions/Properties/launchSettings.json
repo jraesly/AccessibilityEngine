@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "AccessibilityEngine.Functions": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7238",
+      "launchBrowser": false
+    }
+  }
+}
