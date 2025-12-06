@@ -26,6 +26,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AccessibilityEngine.Adapters.PowerApps\AccessibilityEngine.Adapters.PowerApps.csproj" />
     <ProjectReference Include="..\AccessibilityEngine.Core\AccessibilityEngine.Core.csproj" />
     <ProjectReference Include="..\AccessibilityEngine.Rules\AccessibilityEngine.Rules.csproj" />
     <ProjectReference Include="..\AccessibilityEngine.AI\AccessibilityEngine.AI.csproj" />
