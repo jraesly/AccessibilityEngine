@@ -16,13 +16,16 @@ public static class Engine
         if (uiTree is null) throw new ArgumentNullException(nameof(uiTree));
         if (rules is null) throw new ArgumentNullException(nameof(rules));
 
-        var context = new RuleContext(uiTree.Surface, uiTree.AppName);
-
+        var rulesList = rules.ToList();
         var findings = new List<Finding>();
 
-        foreach (var node in Walk(uiTree.Nodes))
+        // Create initial context at root level
+        var rootContext = new RuleContext(uiTree.Surface, uiTree.AppName);
+
+        // Walk the tree with context
+        foreach (var (node, context) in WalkWithContext(uiTree.Nodes, rootContext))
         {
-            foreach (var rule in rules)
+            foreach (var rule in rulesList)
             {
                 if (rule.AppliesTo != null && !Array.Exists(rule.AppliesTo, s => s == uiTree.Surface))
                     continue;
@@ -38,25 +41,57 @@ public static class Engine
         return ScanResult.FromFindings(findings);
     }
 
-    private static IEnumerable<UiNode> Walk(IEnumerable<UiNode> nodes)
+    /// <summary>
+    /// Walks the tree and yields each node with its context (parent, siblings, depth, etc.)
+    /// </summary>
+    private static IEnumerable<(UiNode Node, RuleContext Context)> WalkWithContext(
+        IReadOnlyList<UiNode> nodes,
+        RuleContext parentContext)
     {
-        if (nodes == null) yield break;
+        if (nodes == null || nodes.Count == 0) yield break;
 
-        var stack = new Stack<UiNode>(nodes.Reverse());
-
-        while (stack.Count > 0)
+        for (var i = 0; i < nodes.Count; i++)
         {
-            var current = stack.Pop();
-            yield return current;
+            var node = nodes[i];
+            
+            // Get siblings (all nodes except current)
+            var siblings = nodes.Where((_, idx) => idx != i).ToList();
 
-            if (current.Children != null && current.Children.Count > 0)
+            // Determine if this is a screen (for tracking)
+            var screen = IsScreen(node) ? node : parentContext.Screen;
+
+            // Create context for this node
+            var context = new RuleContext(
+                parentContext.Surface,
+                parentContext.AppName,
+                parentContext.Parent,
+                siblings,
+                parentContext.Depth,
+                i,
+                parentContext.Ancestors,
+                screen);
+
+            yield return (node, context);
+
+            // Process children with updated context
+            if (node.Children != null && node.Children.Count > 0)
             {
-                // push in reverse so the first child is processed first
-                foreach (var child in ((IEnumerable<UiNode>)current.Children).Reverse())
+                var childContext = context.ForChild(node, node.Children, 0, screen);
+                
+                foreach (var childResult in WalkWithContext(node.Children, childContext))
                 {
-                    stack.Push(child);
+                    yield return childResult;
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Determines if a node represents a screen.
+    /// </summary>
+    private static bool IsScreen(UiNode node)
+    {
+        return node.Type.Equals("Screen", StringComparison.OrdinalIgnoreCase) ||
+               node.Type.Contains("Screen", StringComparison.OrdinalIgnoreCase);
     }
 }

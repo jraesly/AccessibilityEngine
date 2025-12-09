@@ -21,8 +21,19 @@ public sealed class ScanSolutionRequest
 
 public sealed class SolutionScanResultDto
 {
+    /// <summary>
+    /// The app name (Canvas App name or MDA app name like "test MDA")
+    /// </summary>
     public string? AppName { get; init; }
+    
+    /// <summary>
+    /// The surface type (CanvasApp, ModelDrivenApp, Portal)
+    /// </summary>
     public SurfaceType Surface { get; init; }
+    
+    /// <summary>
+    /// The scan results containing findings
+    /// </summary>
     public ScanResult Result { get; init; } = default!;
 }
 
@@ -78,14 +89,53 @@ public class ScanSolutionFunction
 
         var trees = await _parser.ParseSolutionAsync(zipBytes);
 
-        var results = new List<SolutionScanResultDto>();
+        // Collect all findings per tree first
+        var treeFindings = new List<(UiTree Tree, IReadOnlyList<Finding> Findings)>();
         foreach (var tree in trees)
         {
             var baseResult = Engine.Analyze(tree, _rules);
             var enriched = await _aiEvaluator.EnrichFindingsAsync(tree, baseResult.Findings as IReadOnlyList<Finding> ?? baseResult.Findings.ToList(), cancellationToken);
-            var final = ScanResult.FromFindings(enriched);
+            treeFindings.Add((tree, enriched));
+        }
 
-            results.Add(new SolutionScanResultDto { AppName = tree.AppName, Surface = tree.Surface, Result = final });
+        var results = new List<SolutionScanResultDto>();
+
+        // Group Canvas apps - one result per app
+        var canvasGroups = treeFindings
+            .Where(t => t.Tree.Surface == SurfaceType.CanvasApp)
+            .GroupBy(t => t.Tree.AppName ?? "Unknown");
+
+        foreach (var group in canvasGroups)
+        {
+            var allFindings = group.SelectMany(t => t.Findings)
+                .DistinctBy(f => f.Id) // Deduplicate by finding Id
+                .ToList();
+            
+            results.Add(new SolutionScanResultDto
+            {
+                AppName = group.Key,
+                Surface = SurfaceType.CanvasApp,
+                Result = ScanResult.FromFindings(allFindings)
+            });
+        }
+
+        // Group MDA findings by MdaAppName - one result per MDA app
+        var mdaGroups = treeFindings
+            .Where(t => t.Tree.Surface == SurfaceType.ModelDrivenApp)
+            .GroupBy(t => t.Tree.MdaAppName ?? "Model-Driven App");
+
+        foreach (var group in mdaGroups)
+        {
+            var allFindings = group.SelectMany(t => t.Findings)
+                .DistinctBy(f => f.Id) // Deduplicate by finding Id
+                .ToList();
+            
+            results.Add(new SolutionScanResultDto
+            {
+                AppName = group.Key,
+                Surface = SurfaceType.ModelDrivenApp,
+                Result = ScanResult.FromFindings(allFindings)
+            });
         }
 
         var ok = req.CreateResponse(System.Net.HttpStatusCode.OK);

@@ -10,7 +10,8 @@ public sealed class MissingAccessibleNameRule : IRule
 {
     public string Id => "MISSING_ACCESSIBLE_NAME";
     public string Description => "Interactive controls must have an accessible name.";
-    public SurfaceType[] AppliesTo => new[] { SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp, SurfaceType.PortalPage, SurfaceType.DomSnapshot };
+    public Severity Severity => Severity.High;
+    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp, SurfaceType.PortalPage, SurfaceType.DomSnapshot];
 
     private static readonly HashSet<string> InteractiveTypes = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -18,7 +19,7 @@ public sealed class MissingAccessibleNameRule : IRule
         "a", "button", "input-button"
     };
 
-    public IEnumerable<Finding> Evaluate(UiNode node, RuleContext context)
+    public IEnumerable<Finding>? Evaluate(UiNode node, RuleContext context)
     {
         if (node is null) yield break;
 
@@ -43,7 +44,8 @@ public sealed class MissingAccessibleNameRule : IRule
                 Message: "Interactive control is missing an accessible name (label/text).",
                 WcagReference: "WCAG 2.1 – 4.1.2",
                 Section508Reference: "Section 508 - Name, Role, Value",
-                Rationale: "Assistive technologies rely on accessible names to convey control purpose to users."
+                Rationale: "Assistive technologies rely on accessible names to convey control purpose to users.",
+                SuggestedFix: $"Set the Text property or AccessibleLabel property on '{node.Id}' to describe the control's action or purpose."
             );
         }
     }

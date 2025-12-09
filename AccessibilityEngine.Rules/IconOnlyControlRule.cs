@@ -10,14 +10,15 @@ public sealed class IconOnlyControlRule : IRule
 {
     public string Id => "ICON_ONLY_CONTROL_NO_LABEL";
     public string Description => "Icon-only controls must expose an accessible label.";
-    public SurfaceType[] AppliesTo => new[] { SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp, SurfaceType.PortalPage, SurfaceType.DomSnapshot };
+    public Severity Severity => Severity.High;
+    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp, SurfaceType.PortalPage, SurfaceType.DomSnapshot];
 
     private static readonly HashSet<string> IconTypes = new(StringComparer.OrdinalIgnoreCase)
     {
         "Icon", "IconButton", "Glyph"
     };
 
-    public IEnumerable<Finding> Evaluate(UiNode node, RuleContext context)
+    public IEnumerable<Finding>? Evaluate(UiNode node, RuleContext context)
     {
         if (node is null) yield break;
 
@@ -49,7 +50,8 @@ public sealed class IconOnlyControlRule : IRule
                 Message: "Icon-only control must expose an accessible label describing its action.",
                 WcagReference: "WCAG 2.1 – 4.1.2",
                 Section508Reference: "Section 508 - Name, Role, Value",
-                Rationale: "Icon-only controls without labels are not discoverable by assistive technologies."
+                Rationale: "Icon-only controls without labels are not discoverable by assistive technologies.",
+                SuggestedFix: $"Set the AccessibleLabel property on icon '{node.Id}' to describe its action (e.g., 'Delete item', 'Edit record', 'Open menu')."
             );
         }
     }
