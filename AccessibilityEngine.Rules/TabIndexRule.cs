@@ -14,7 +14,7 @@ public sealed class TabIndexRule : IRule
     public string Id => "TAB_INDEX";
     public string Description => "Controls should have proper TabIndex for keyboard navigation.";
     public Severity Severity => Severity.Medium;
-    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp];
+    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp, SurfaceType.PortalPage];
 
     // Interactive control types that should be focusable
     private static readonly HashSet<string> FocusableTypes = new(StringComparer.OrdinalIgnoreCase)

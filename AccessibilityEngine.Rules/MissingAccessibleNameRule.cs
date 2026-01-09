@@ -45,8 +45,12 @@ public sealed class MissingAccessibleNameRule : IRule
                 WcagReference: "WCAG 2.1 – 4.1.2",
                 Section508Reference: "Section 508 - Name, Role, Value",
                 Rationale: "Assistive technologies rely on accessible names to convey control purpose to users.",
+                EntityName: node.Meta?.EntityName ?? context.EntityName,
+                TabName: node.Meta?.TabName,
+                SectionName: node.Meta?.SectionName,
                 SuggestedFix: $"Set the Text property or AccessibleLabel property on '{node.Id}' to describe the control's action or purpose."
             );
         }
     }
 }
+

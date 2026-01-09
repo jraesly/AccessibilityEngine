@@ -19,8 +19,18 @@ public static class Engine
         var rulesList = rules.ToList();
         var findings = new List<Finding>();
 
+        // For MDA: AppName is the table name, MdaAppName is the actual app name
+        // For other surfaces: AppName is the app name, no entity grouping
+        var appName = uiTree.Surface == SurfaceType.ModelDrivenApp && !string.IsNullOrEmpty(uiTree.MdaAppName)
+            ? uiTree.MdaAppName
+            : uiTree.AppName;
+        
+        var entityName = uiTree.Surface == SurfaceType.ModelDrivenApp
+            ? uiTree.AppName  // For MDA, the UiTree.AppName is actually the table/entity name
+            : null;
+
         // Create initial context at root level
-        var rootContext = new RuleContext(uiTree.Surface, uiTree.AppName);
+        var rootContext = new RuleContext(uiTree.Surface, appName, entityName: entityName);
 
         // Walk the tree with context
         foreach (var (node, context) in WalkWithContext(uiTree.Nodes, rootContext))
@@ -95,3 +105,4 @@ public static class Engine
                node.Type.Contains("Screen", StringComparison.OrdinalIgnoreCase);
     }
 }
+

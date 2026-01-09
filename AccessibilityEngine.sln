@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.3.11222.16 d18.3
+VisualStudioVersion = 18.3.11222.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessibilityEngine.AI", "AccessibilityEngine.AI\AccessibilityEngine.AI.csproj", "{6C796311-0273-63C2-A5AC-02EF3F85C610}"
 EndProject
@@ -17,6 +17,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccessibilityEngine.Adapters.PowerApps", "AccessibilityEngine.Adapters.PowerApps\AccessibilityEngine.Adapters.PowerApps.csproj", "{D513107D-8084-CE0F-65C5-20B7BA2331BA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{86C4DD02-3D20-41A3-8E84-4F163D0F6031}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Downloads\508_Data\508_ict_chunks.json = ..\..\..\Downloads\508_Data\508_ict_chunks.json
+		..\..\..\Downloads\508_Data\import requests.py = ..\..\..\Downloads\508_Data\import requests.py
+		..\..\..\Downloads\508_Data\power-apps-maker.pdf = ..\..\..\Downloads\508_Data\power-apps-maker.pdf
+		..\..\..\Downloads\508_Data\Revised 508 Standards and 255 Guidelines.pdf = ..\..\..\Downloads\508_Data\Revised 508 Standards and 255 Guidelines.pdf
+		..\..\..\Downloads\508_Data\wcag22.pdf = ..\..\..\Downloads\508_Data\wcag22.pdf
+		..\..\..\Downloads\508_Data\wcag22pdfscraper.py = ..\..\..\Downloads\508_Data\wcag22pdfscraper.py
+		..\..\..\Downloads\508_Data\wcag22_html_chunks.json = ..\..\..\Downloads\508_Data\wcag22_html_chunks.json
+		..\..\..\Downloads\508_Data\wcag22_pdf_chunks.json = ..\..\..\Downloads\508_Data\wcag22_pdf_chunks.json
+		..\..\..\Downloads\508_Data\wcag_scraper.py = ..\..\..\Downloads\508_Data\wcag_scraper.py
+		..\..\..\Downloads\508_Data\web-accessibility-checklist-wcag-2.2.pdf = ..\..\..\Downloads\508_Data\web-accessibility-checklist-wcag-2.2.pdf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

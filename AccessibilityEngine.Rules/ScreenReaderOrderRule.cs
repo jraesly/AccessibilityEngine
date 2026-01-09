@@ -15,7 +15,7 @@ public sealed class ScreenReaderOrderRule : IRule
     public string Id => "SCREEN_READER_ORDER";
     public string Description => "Controls should follow a logical reading order (left-to-right, top-to-bottom).";
     public Severity Severity => Severity.Medium;
-    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp];
+    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp, SurfaceType.PortalPage];
 
     public IEnumerable<Finding>? Evaluate(UiNode node, RuleContext context)
     {

@@ -14,7 +14,7 @@ public sealed class TouchTargetSizeRule : IRule
     public string Id => "TOUCH_TARGET_SIZE";
     public string Description => "Interactive controls should meet minimum touch target size requirements.";
     public Severity Severity => Severity.Medium;
-    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp];
+    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp, SurfaceType.PortalPage, SurfaceType.DomSnapshot];
 
     // WCAG 2.2 Level AA: 24x24 CSS pixels minimum
     // WCAG 2.2 Level AAA: 44x44 CSS pixels

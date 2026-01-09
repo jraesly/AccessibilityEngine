@@ -16,8 +16,15 @@ public sealed class RuleContext
 
     /// <summary>
     /// The name of the app being scanned.
+    /// For MDA: The actual Model-Driven App name (e.g., "MDA 2").
+    /// For Canvas: The Canvas app name.
     /// </summary>
     public string? AppName { get; }
+
+    /// <summary>
+    /// For MDA only: The table/entity name that findings are grouped by.
+    /// </summary>
+    public string? EntityName { get; }
 
     /// <summary>
     /// The parent node of the current node being evaluated, if any.
@@ -57,10 +64,12 @@ public sealed class RuleContext
         int depth = 0,
         int siblingIndex = 0,
         IReadOnlyList<UiNode>? ancestors = null,
-        UiNode? screen = null)
+        UiNode? screen = null,
+        string? entityName = null)
     {
         Surface = surface;
         AppName = appName;
+        EntityName = entityName;
         Parent = parent;
         Siblings = siblings ?? [];
         Depth = depth;
@@ -83,7 +92,8 @@ public sealed class RuleContext
             Depth + 1,
             siblingIndex,
             newAncestors,
-            screen ?? Screen);
+            screen ?? Screen,
+            EntityName);
     }
 }
 
@@ -96,3 +106,4 @@ public interface IRule
 
     IEnumerable<Finding>? Evaluate(UiNode node, RuleContext context);
 }
+

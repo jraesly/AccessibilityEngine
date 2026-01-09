@@ -11,7 +11,7 @@ public sealed class EmptyLabelFieldRule : IRule
     public string Id => "MISSING_FIELD_LABEL";
     public string Description => "Input fields should have visible or programmatic labels.";
     public Severity Severity => Severity.Medium;
-    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp];
+    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp, SurfaceType.PortalPage, SurfaceType.DomSnapshot];
 
     // Expanded list of field types including Power Apps control types
     private static readonly HashSet<string> FieldTypes = new(StringComparer.OrdinalIgnoreCase)
@@ -104,3 +104,4 @@ public sealed class EmptyLabelFieldRule : IRule
                value.Contains("ThisItem.");
     }
 }
+

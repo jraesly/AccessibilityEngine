@@ -95,6 +95,9 @@ public sealed class AccessibleLabelRule : IRule
                 WcagReference: "WCAG 2.1 – 4.1.2 Name, Role, Value",
                 Section508Reference: "Section 508 - Name, Role, Value",
                 Rationale: "Accessible labels ensure assistive technologies can convey the purpose of controls to users.",
+                EntityName: node.Meta?.EntityName ?? context.EntityName,
+                TabName: node.Meta?.TabName,
+                SectionName: node.Meta?.SectionName,
                 SuggestedFix: $"Set the AccessibleLabel property on '{node.Id}' to a descriptive text that conveys the control's purpose to screen reader users."
             );
         }

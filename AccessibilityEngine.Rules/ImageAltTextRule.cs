@@ -46,6 +46,9 @@ public sealed class ImageAltTextRule : IRule
                 WcagReference: "WCAG 2.1 – 1.1.1",
                 Section508Reference: "Section 508 - Text Alternatives",
                 Rationale: "Alternative text ensures non-text content is accessible to assistive technologies.",
+                EntityName: node.Meta?.EntityName ?? context.EntityName,
+                TabName: node.Meta?.TabName,
+                SectionName: node.Meta?.SectionName,
                 SuggestedFix: $"Set the AccessibleLabel or Alt property on image '{node.Id}' to a descriptive text that conveys the image's purpose or content."
             );
         }
@@ -68,6 +71,9 @@ public sealed class ImageAltTextRule : IRule
                     WcagReference: "WCAG 2.1 – 1.1.1",
                     Section508Reference: "Section 508 - Text Alternatives",
                     Rationale: "Descriptive alt text provides meaningful context for assistive technology users.",
+                    EntityName: node.Meta?.EntityName ?? context.EntityName,
+                    TabName: node.Meta?.TabName,
+                    SectionName: node.Meta?.SectionName,
                     SuggestedFix: $"Replace the generic alt text on '{node.Id}' with a description of what the image shows or its purpose (e.g., 'Company logo' instead of 'logo', or 'Chart showing sales growth' instead of 'image')."
                 );
             }

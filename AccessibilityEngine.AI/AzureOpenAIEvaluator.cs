@@ -112,8 +112,8 @@ public sealed class AzureOpenAIEvaluator : IAIEvaluator
     private static string GetSystemPrompt()
     {
         return """
-            You are an accessibility expert specializing in Power Apps (Canvas and Model-Driven Apps).
-            Your task is to provide specific, actionable remediation suggestions for accessibility issues.
+            You are an accessibility expert specializing in Power Apps (Canvas, Power Pages Portals, Model-Driven Apps).
+            Your task is to provide brief, specific, actionable remediation suggestions for accessibility issues.
             
             You have deep knowledge of:
             - WCAG 2.1 and 2.2 guidelines
@@ -135,7 +135,7 @@ public sealed class AzureOpenAIEvaluator : IAIEvaluator
     private static string BuildEnrichmentPrompt(UiTree uiTree, List<Finding> findings)
     {
         var sb = new StringBuilder();
-        sb.AppendLine("Analyze these accessibility findings and provide enhanced remediation suggestions.");
+        sb.AppendLine("Analyze these accessibility findings and provide enhanced, concise remediation suggestions.");
         sb.AppendLine();
         sb.AppendLine("App Context:");
         sb.AppendLine($"- Surface Type: {uiTree.Surface}");

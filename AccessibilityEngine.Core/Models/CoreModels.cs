@@ -85,7 +85,8 @@ public sealed record Finding(
     string? EntityName = null,
     string? TabName = null,
     string? SectionName = null,
-    string? SuggestedFix = null
+    string? SuggestedFix = null,
+    WcagCriterion WcagCriterion = WcagCriterion.None
 );
 
 public sealed record ScanSummary(int Total, IReadOnlyDictionary<Severity, int> BySeverity);

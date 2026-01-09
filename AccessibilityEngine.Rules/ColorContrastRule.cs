@@ -16,7 +16,7 @@ public sealed class ColorContrastRule : IRule
     public string Id => "COLOR_CONTRAST";
     public string Description => "Text must have sufficient color contrast against its background.";
     public Severity Severity => Severity.High;
-    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp];
+    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp, SurfaceType.PortalPage, SurfaceType.DomSnapshot];
 
     // WCAG 2.1 AA requirements
     private const double NormalTextMinRatio = 4.5;
@@ -77,6 +77,9 @@ public sealed class ColorContrastRule : IRule
                         WcagReference: "WCAG 2.1 – 1.4.3 Contrast (Minimum)",
                         Section508Reference: "Section 508 - Color Contrast",
                         Rationale: "Text must have a contrast ratio of at least 4.5:1 (3:1 for large text) to be readable by users with low vision.",
+                        EntityName: node.Meta?.EntityName ?? context.EntityName,
+                        TabName: node.Meta?.TabName,
+                        SectionName: node.Meta?.SectionName,
                         SuggestedFix: $"Adjust the Color or Fill property on '{node.Id}' to achieve at least {requiredRatio}:1 contrast ratio. Use a contrast checker tool to verify."
                     );
                 }

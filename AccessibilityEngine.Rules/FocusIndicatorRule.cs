@@ -14,7 +14,7 @@ public sealed class FocusIndicatorRule : IRule
     public string Id => "FOCUS_INDICATOR";
     public string Description => "Interactive controls must have a visible focus indicator.";
     public Severity Severity => Severity.High;
-    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp];
+    public SurfaceType[]? AppliesTo => [SurfaceType.CanvasApp, SurfaceType.ModelDrivenApp, SurfaceType.PortalPage, SurfaceType.DomSnapshot];
 
     // Interactive control types that need focus indicators
     private static readonly HashSet<string> InteractiveTypes = new(StringComparer.OrdinalIgnoreCase)
